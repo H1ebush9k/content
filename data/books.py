@@ -1,12 +1,10 @@
 import sqlalchemy.ext.declarative as dec
 import sqlalchemy
 from sqlalchemy import orm
-
-SqlAlchemyBase = dec.declarative_base()
-
+from .db_session import SqlAlchemyBase
 
 class Book(SqlAlchemyBase):
-    __tablename__ = 'book'
+    __tablename__ = 'books'
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=True)

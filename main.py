@@ -1,24 +1,15 @@
 from flask import Flask, request, abort, render_template, redirect
 from data import db_session
 from data.users import User
-from forms.user import RegisterForm
+from forms.user_register import RegisterForm
 from forms.content import ContentForm
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from flask_wtf import FlaskForm
-from wtforms import EmailField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired
 from data.db_session import global_init
+from forms.user_enter import SignInForm
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-
-
-class LoginForm(FlaskForm):
-    email = EmailField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
-    submit = SubmitField('Войти')
 
 
 @login_manager.user_loader
@@ -30,7 +21,7 @@ def load_user(user_id):
 
 
 @app.route('/register', methods=['GET', 'POST'])
-def reqister():
+def register():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
@@ -43,10 +34,13 @@ def reqister():
                                    form=form,
                                    message="Такой пользователь уже есть")
         user = User(
-            name=form.nickname.data,
-            email=form.email.data,
-            about=form.about.data
+            # name=form.name.data,
+            # email=form.email.data,
+            # about=form.about.data
         )
+        user.name = form.name.data
+        user.email = form.email.data
+        user.about = form.about.data
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
@@ -56,7 +50,7 @@ def reqister():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = SignInForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
@@ -75,10 +69,13 @@ def logout():
     logout_user()
     return redirect("/")
 
+@app.route('/')
+def index():
+    return render_template('base.html')
 
 def main():
-    db_session.global_init("db/cool.db")
-    app.run()
+    db_session.global_init("db/content.db")
+    app.run(host='127.0.0.1', port=5000)
 
 
 if __name__ == '__main__':

@@ -2,8 +2,7 @@ import sqlalchemy.ext.declarative as dec
 import sqlalchemy
 import datetime
 from sqlalchemy import orm
-
-SqlAlchemyBase = dec.declarative_base()
+from .db_session import SqlAlchemyBase
 
 
 class Content(SqlAlchemyBase):
