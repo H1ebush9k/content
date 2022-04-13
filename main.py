@@ -5,6 +5,7 @@ from forms.user_register import RegisterForm
 from flask_login import LoginManager, login_user, login_required, logout_user
 from forms.user_enter import SignInForm
 from forms.content import ContentForm
+from forms.book import BookForm
 from flask_login import current_user
 from data.contents import Content
 from data.books import Book
@@ -93,6 +94,27 @@ def add_news():
         db_sess.commit()
         return redirect('/')
     return render_template('content.html', title='Добавление новости',
+                           form=form)
+
+@app.route('/add_book',  methods=['GET', 'POST'])
+@login_required
+def add_book():
+    form = BookForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        book = Book()
+        book.name = form.name.data
+        book.name_english = form.name_english.data
+        book.author = form.author.data
+        book.year = form.year.data
+        # book = db_sess.query(Books).filter(Books.name_english == form.book.data).first()
+        # book.content.apppend(content)
+        # current_user.content.append(content)
+        # db_sess.merge(current_user)
+        # db_sess.merge(book)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('book.html', title='Добавление книги',
                            form=form)
 
 
