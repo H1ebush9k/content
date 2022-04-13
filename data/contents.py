@@ -1,4 +1,3 @@
-import sqlalchemy.ext.declarative as dec
 import sqlalchemy
 import datetime
 from sqlalchemy import orm

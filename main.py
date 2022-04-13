@@ -1,11 +1,13 @@
-from flask import Flask, request, abort, render_template, redirect
+from flask import Flask, render_template, redirect
 from data import db_session
 from data.users import User
 from forms.user_register import RegisterForm
-from forms.content import ContentForm
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from data.db_session import global_init
+from flask_login import LoginManager, login_user, login_required, logout_user
 from forms.user_enter import SignInForm
+from forms.content import ContentForm
+from flask_login import current_user
+from data.contents import Content
+from data.books import Book
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -72,6 +74,27 @@ def logout():
 @app.route('/')
 def index():
     return render_template('base.html')
+
+
+@app.route('/add_content',  methods=['GET', 'POST'])
+@login_required
+def add_news():
+    form = ContentForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        content = Content()
+        content.title = form.title.data
+        content.content = form.content.data
+        book = db_sess.query(Book).filter(Book.name_english == form.book.data).first()
+        book.content.apppend(content)
+        current_user.content.append(content)
+        db_sess.merge(current_user)
+        db_sess.merge(book)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('content.html', title='Добавление новости',
+                           form=form)
+
 
 def main():
     db_session.global_init("db/content.db")

@@ -7,6 +7,8 @@ class Book(SqlAlchemyBase):
     __tablename__ = 'books'
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
+    name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    name_english = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     year = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
     content = orm.relation("Content", back_populates='book')

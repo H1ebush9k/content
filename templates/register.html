@@ -10,21 +10,14 @@
     <title>{{title}}</title>
 </head>
 <body>
-<h1 align="center">Регистрация</h1>
-<style>
-.outline {
-border: 1px solid red;
-padding: 0 10px;
-   }
-</style>
-<form action="" method="post" style='font-size:20px; text-indent:250px'>
+<h1>Регистрация</h1>
+<form action="" method="post">
     {{ form.hidden_tag() }}
-    <div class="outline">
     <p>
         {{ form.email.label }}<br>
-        <p>{{ form.email(class="form-control", type="email") }}</p><br>
+        {{ form.email(class="form-control", type="email") }}<br>
         {% for error in form.email.errors %}
-            <p class="alert alert-danger" role="alert" >
+            <p class="alert alert-danger" role="alert">
                 {{ error }}
             </p>
         {% endfor %}
@@ -67,7 +60,6 @@ padding: 0 10px;
     </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
-    </div>
 </form>
 </body>
 </html>
