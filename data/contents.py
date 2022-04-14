@@ -14,4 +14,3 @@ class Content(SqlAlchemyBase):
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     user = orm.relation('User')
-    book = orm.relation('Book')

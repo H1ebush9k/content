@@ -41,7 +41,7 @@ def register():
             # email=form.email.data,
             # about=form.about.data
         )
-        user.name = form.name.data
+        user.nickname = form.name.data
         user.email = form.email.data
         user.about = form.about.data
         user.set_password(form.password.data)
@@ -87,10 +87,9 @@ def add_news():
         content.title = form.title.data
         content.content = form.content.data
         book = db_sess.query(Book).filter(Book.name_english == form.book.data).first()
-        book.content.apppend(content)
+        content.book_id = book.id
         current_user.content.append(content)
         db_sess.merge(current_user)
-        db_sess.merge(book)
         db_sess.commit()
         return redirect('/')
     return render_template('content.html', title='Добавление новости',
@@ -107,11 +106,7 @@ def add_book():
         book.name_english = form.name_english.data
         book.author = form.author.data
         book.year = form.year.data
-        # book = db_sess.query(Books).filter(Books.name_english == form.book.data).first()
-        # book.content.apppend(content)
-        # current_user.content.append(content)
-        # db_sess.merge(current_user)
-        # db_sess.merge(book)
+        db_sess.merge(book)
         db_sess.commit()
         return redirect('/')
     return render_template('book.html', title='Добавление книги',

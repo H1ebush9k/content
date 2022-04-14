@@ -11,4 +11,3 @@ class Book(SqlAlchemyBase):
     name_english = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     author = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     year = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
-    content = orm.relation("Content", back_populates='book')
