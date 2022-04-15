@@ -92,7 +92,7 @@ def add_news():
         db_sess.merge(current_user)
         db_sess.commit()
         return redirect('/')
-    return render_template('content.html', title='Добавление новости',
+    return render_template('add_content.html', title='Добавление новости',
                            form=form)
 
 @app.route('/add_book',  methods=['GET', 'POST'])
@@ -109,8 +109,13 @@ def add_book():
         db_sess.merge(book)
         db_sess.commit()
         return redirect('/')
-    return render_template('book.html', title='Добавление книги',
+    return render_template('add_book.html', title='Добавление книги',
                            form=form)
+
+
+# @app.route('/content', methods=['GET'])
+# def view_content():
+
 
 
 def main():
