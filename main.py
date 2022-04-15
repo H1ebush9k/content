@@ -121,6 +121,11 @@ def view_content():
     contents = db_sess.query(Content).all()
     return render_template('view_contents.html', title="Содержания", contents=contents)
 
+@app.route('/content/<id>', methods=['GET'])
+def view_content(id):
+    db_sess = db_session.create_session()
+    content = db_sess.query(Content).filter(Content.id == id).first()
+    render_template('view_content.html', content=content)
 
 
 def main():
