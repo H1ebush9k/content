@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Никнейм: {{user.nickname}}</h1>
+<p>О себе: {{user.about}}</p>
+<p>Дата создания: {{user.created_date}}</p>
+{% for item in user.content%}
+<div class="col-md6 border rounded">
+    <p><a href="/content/{{item.id}}">{{item.title}}</a></p>
+    <p>{{item.short_content}}</p>
+    <p>Дата написания - {{item.creation_date}}</p>
+</div>
+{% endblock %}

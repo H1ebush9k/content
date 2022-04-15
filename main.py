@@ -139,6 +139,12 @@ def view_book(id):
     contents = db_sess.query(Content).filter(book.id==Content.book_id).all()
     return render_template('view_book.html', book=book, contents=contents)
 
+@app.route('/user/<id>', methods=['GET'])
+def view_user(id):
+    db_sess = db_session.create_session()
+    user = db_sess.query(User).filter(User.id == id).first()
+    return render_template('view_user.html', user=user)
+
 def main():
     db_session.global_init("db/content.db")
     app.run(host='127.0.0.1', port=5000)
