@@ -86,11 +86,11 @@ def add_content():
         content = Content()
         content.title = form.title.data
         content.content = form.content.data
+        content.short_content = form.short_content.data
         book = db_sess.query(Book).filter(Book.name_english == form.book.data).first()
         content.book_id = book.id
         current_user.content.append(content)
         db_sess.merge(content)
-        db_sess.merge(current_user)
         # db_sess.merge(book)
         db_sess.commit()
         return redirect('/')
@@ -115,8 +115,11 @@ def add_book():
                            form=form)
 
 
-# @app.route('/content', methods=['GET'])
-# def view_content():
+@app.route('/content', methods=['GET'])
+def view_content():
+    db_sess = db_session.create_session()
+    contents = db_sess.query(Content).all()
+    return render_template('view_contents.html', title="Содержания", contents=contents)
 
 
 

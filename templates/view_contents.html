@@ -2,15 +2,15 @@
 
 {% block content %}
 
-<h1>title</h1>
+<h1>{{title}}</h1>
 {% for item in contents%}
 <div class="col-md6 border rounded">
     <h2>{{item.title}}</h2>
     <div>
-        {{item.content}}
+        {{item.short_content}}
     </div>
     <div>
-        Автор - {{item.user.name}}, Дата написания - {{item.created_date}}
+        Автор - {{item.user.nickname}}, Дата написания - {{item.creation_date}}
     </div>
 </div>
 {% endfor %}
