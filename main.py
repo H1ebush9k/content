@@ -79,7 +79,7 @@ def index():
 
 @app.route('/add_content',  methods=['GET', 'POST'])
 @login_required
-def add_news():
+def add_content():
     form = ContentForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -89,7 +89,9 @@ def add_news():
         book = db_sess.query(Book).filter(Book.name_english == form.book.data).first()
         content.book_id = book.id
         current_user.content.append(content)
+        db_sess.merge(content)
         db_sess.merge(current_user)
+        # db_sess.merge(book)
         db_sess.commit()
         return redirect('/')
     return render_template('add_content.html', title='Добавление новости',

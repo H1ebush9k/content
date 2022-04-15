@@ -12,5 +12,6 @@ class Content(SqlAlchemyBase):
     book_id = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("books.id"), nullable=True)
     title = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    short_content = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     creation_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     user = orm.relation('User')

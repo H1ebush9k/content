@@ -14,6 +14,15 @@
         {% endfor %}
     </p>
     <p>
+        {{ form.short_content.label }}<br>
+        {{ form.short_content(class="form-control", maxlength='120') }}<br>
+        {% for error in form.title.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
+    <p>
         {{ form.content.label }}<br>
         {{ form.content(class="form-control") }}<br>
         {% for error in form.content.errors %}
@@ -34,5 +43,4 @@
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
 </form>
-{% endfor %}
 {% endblock %}
