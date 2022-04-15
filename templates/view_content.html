@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-
 <h1>{{content.title}}</h1>
-
-<dev>{{content.content}}</dev>
+<div>{{content.content}}</div>
+<p>По книге <a href=/book/{{book.id}}>{{book.name}}</a></p>
+<p>Сделано <a href=/user/{{content.user_id}}>{{content.user.nickname}}</a></p>
+{% endblock %}

@@ -74,7 +74,10 @@ def logout():
 
 @app.route('/')
 def index():
-    return render_template('base.html')
+    db_sess = db_session.create_session()
+    book = db_sess.query(Book).all()
+    short_content = db_sess.query(Content).all()
+    return render_template('view_books.html', title="Книги", books=book, short_content=short_content)
 
 
 @app.route('/add_content',  methods=['GET', 'POST'])
@@ -89,6 +92,7 @@ def add_content():
         content.short_content = form.short_content.data
         book = db_sess.query(Book).filter(Book.name_english == form.book.data).first()
         content.book_id = book.id
+        content.short_content = form.short_content.data
         current_user.content.append(content)
         db_sess.merge(content)
         # db_sess.merge(book)
@@ -116,7 +120,7 @@ def add_book():
 
 
 @app.route('/content', methods=['GET'])
-def view_content():
+def view_contents():
     db_sess = db_session.create_session()
     contents = db_sess.query(Content).all()
     return render_template('view_contents.html', title="Содержания", contents=contents)
@@ -125,8 +129,15 @@ def view_content():
 def view_content(id):
     db_sess = db_session.create_session()
     content = db_sess.query(Content).filter(Content.id == id).first()
-    render_template('view_content.html', content=content)
+    book = db_sess.query(Book).filter(Book.id == content.book_id).first()
+    return render_template('view_content.html', content=content, book=book)
 
+@app.route('/book/<id>', methods=['GET'])
+def view_book(id):
+    db_sess = db_session.create_session()
+    book = db_sess.query(Book).filter(Book.id == id).first()
+    contents = db_sess.query(Content).filter(book.id==Content.book_id).all()
+    return render_template('view_book.html', book=book, contents=contents)
 
 def main():
     db_session.global_init("db/content.db")
