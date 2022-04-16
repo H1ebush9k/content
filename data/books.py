@@ -3,6 +3,7 @@ import sqlalchemy
 from sqlalchemy import orm
 from .db_session import SqlAlchemyBase
 
+
 class Book(SqlAlchemyBase):
     # создаем бд для книг
     __tablename__ = 'books'

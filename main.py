@@ -10,6 +10,7 @@ from forms.book import BookForm
 from flask_login import current_user
 from data.contents import Content
 from data.books import Book
+
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -20,8 +21,6 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 def load_user(user_id):
     db_sess = db_session.create_session()
     return db_sess.query(User).get(user_id)
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -73,6 +72,7 @@ def logout():
     logout_user()
     return redirect("/")
 
+
 @app.route('/')
 def index():
     db_sess = db_session.create_session()
@@ -81,7 +81,7 @@ def index():
     return render_template('view_books.html', title="Книги", books=book, short_content=short_content)
 
 
-@app.route('/add_content',  methods=['GET', 'POST'])
+@app.route('/add_content', methods=['GET', 'POST'])
 @login_required
 def add_content():
     form = ContentForm()
@@ -102,7 +102,8 @@ def add_content():
     return render_template('add_content.html', title='Добавление новости',
                            form=form)
 
-@app.route('/add_book',  methods=['GET', 'POST'])
+
+@app.route('/add_book', methods=['GET', 'POST'])
 @login_required
 def add_book():
     form = BookForm()
@@ -126,6 +127,7 @@ def view_contents():
     contents = db_sess.query(Content).all()
     return render_template('view_contents.html', title="Содержания", contents=contents)
 
+
 @app.route('/content/<id>', methods=['GET'])
 def view_content(id):
     db_sess = db_session.create_session()
@@ -133,12 +135,14 @@ def view_content(id):
     book = db_sess.query(Book).filter(Book.id == content.book_id).first()
     return render_template('view_content.html', content=content, book=book)
 
+
 @app.route('/book/<id>', methods=['GET'])
 def view_book(id):
     db_sess = db_session.create_session()
     book = db_sess.query(Book).filter(Book.id == id).first()
-    contents = db_sess.query(Content).filter(book.id==Content.book_id).all()
+    contents = db_sess.query(Content).filter(book.id == Content.book_id).all()
     return render_template('view_book.html', book=book, contents=contents)
+
 
 @app.route('/user/<id>', methods=['GET'])
 def view_user(id):
@@ -146,10 +150,12 @@ def view_user(id):
     user = db_sess.query(User).filter(User.id == id).first()
     return render_template('view_user.html', user=user)
 
+
 def main():
     db_session.global_init("db/content.db")
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
+
 
 if __name__ == '__main__':
     main()
